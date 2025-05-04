@@ -1,7 +1,7 @@
 import dbConfig from '../database/db.config.js';
 import { Sequelize } from 'sequelize';
 import User from './User.js';
-
+import pg from "pg";
 
 
 const sequelize = new Sequelize(
@@ -12,6 +12,7 @@ const sequelize = new Sequelize(
     host: dbConfig.host,
     dialect: dbConfig.dialect,
     port: dbConfig.port,
+    dialectModule: pg,
     pool: {
       max: dbConfig.pool.max,
       min: dbConfig.pool.min,
