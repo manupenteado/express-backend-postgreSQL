@@ -35,7 +35,7 @@ const register = async (req, res) => {
     } catch (error) {
         console.error("Registration error:", error);
         
-        if (error.code === 11000) {
+        if (error.name === 'SequelizeUniqueConstraintError') {
             return res.status(409).json({
                 success: false,
                 message: "Email already exists"
@@ -65,7 +65,7 @@ const login = async (req, res) => {
             message: 'Login successful',
             token,
             user: {
-                id: user._id,
+                id: user.id,
                 name: user.name,
                 email: user.email
             }
