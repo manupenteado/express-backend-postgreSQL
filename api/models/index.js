@@ -3,7 +3,6 @@ import { Sequelize } from 'sequelize';
 import User from './User.js';
 import pg from "pg";
 
-
 const sequelize = new Sequelize(
   dbConfig.database,
   dbConfig.user,
@@ -13,11 +12,13 @@ const sequelize = new Sequelize(
     dialect: dbConfig.dialect,
     port: dbConfig.port,
     dialectModule: pg,
-    dialectOptions:{
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
+    dialectOptions: {
+      ...(process.env.NODE_ENV === 'production' && {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      })
     },
     pool: {
       max: dbConfig.pool.max,
@@ -29,7 +30,6 @@ const sequelize = new Sequelize(
   }
 );
 
-
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
@@ -37,4 +37,3 @@ db.sequelize = sequelize;
 db.users = User(sequelize, Sequelize);
 
 export default db;
-
